@@ -272,6 +272,7 @@ func main() {
 	logger := initLogger()
 
 	configPath := flag.String("config", "config.json", "path to config file")
+	port := flag.Int("port", 3881, "port to run the server on")
 	flag.Parse()
 
 	viper.SetConfigFile(*configPath)
@@ -299,6 +300,7 @@ func main() {
 
 	loggedMux := requestLoggerMiddleware(logger, mux)
 
-	logger.Info("Starting app..")
-	logger.Fatal(http.ListenAndServe(":3881", loggedMux))
+	serverAddress := fmt.Sprintf(":%d", *port)
+	logger.Infof("Starting app on port %d..", *port)
+	logger.Fatal(http.ListenAndServe(serverAddress, loggedMux))
 }
