@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"log"
 	"net"
 	"net/http"
 	"net/http/httputil"
@@ -269,44 +268,31 @@ func matchesPattern(endpoint, pattern string) bool {
 	return strings.HasPrefix(endpoint, prefix) && strings.HasSuffix(endpoint, suffix)
 }
 
-func initConfig() *Config {
-	viper.SetConfigName("config") // Nom du fichier de configuration (sans extension)
-	viper.SetConfigType("json")   // Par exemple "json", "yaml"
-	viper.AddConfigPath(".")      // Par exemple, le chemin vers votre répertoire de configuration
-
-	viper.AutomaticEnv() // Surcharge la configuration avec des variables d'environnement
-
-	if err := viper.ReadInConfig(); err != nil {
-		log.Fatalf("Error reading config file, %s", err)
-	}
-
-	var config Config
-	err := viper.Unmarshal(&config)
-	if err != nil {
-		log.Fatalf("Unable to decode into struct, %v", err)
-	}
-
-	return &config
-}
-
 func main() {
 	logger := initLogger()
 
 	configPath := flag.String("config", "config.json", "path to config file")
 	flag.Parse()
 
-	serverState := &ServerState{}
-	config, err := loadConfig(*configPath)
-	if err != nil {
-		logger.Fatal("Error loading config file: ", err)
+	viper.SetConfigFile(*configPath)
+	viper.AutomaticEnv()
+
+	var config Config
+	if err := viper.ReadInConfig(); err != nil {
+		logger.Fatalf("Error reading config file: %v", err)
 	}
+	if err := viper.Unmarshal(&config); err != nil {
+		logger.Fatalf("Unable to decode into struct: %v", err)
+	}
+
+	serverState := &ServerState{}
 
 	logger.Info("Configuration successfully loaded")
 
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		handler(logger, w, r, *config, serverState)
+		handler(logger, w, r, config, serverState)
 	})
 
 	mux.HandleFunc("/ping", PingHandler)
