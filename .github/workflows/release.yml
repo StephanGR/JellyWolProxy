@@ -14,10 +14,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: wangyoucao577/go-release-action@v1
+
+      # Build the binary
+      - name: Set up Go
+        uses: actions/setup-go@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          goos: linux
-          goarch: amd64
-          goversion: "https://go.dev/dl/go1.21.4.linux-amd64.tar.gz"
-          binary_name: "jelly-wol-proxy"
+          go-version: '1.21.4'
+
+      - name: Build
+        run: |
+          GOOS=linux GOARCH=amd64 go build -o jelly-wol-proxy
+
+      # Upload the binary as a release asset
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./jelly-wol-proxy
+          asset_name: jelly-wol-proxy-linux-amd64
+          asset_content_type: application/octet-stream
