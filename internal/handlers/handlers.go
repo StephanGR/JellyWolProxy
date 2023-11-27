@@ -34,7 +34,7 @@ func Handler(logger *logrus.Logger, w http.ResponseWriter, r *http.Request, conf
 			logger.Info("Server is offline, trying to wake up using Wake On Lan")
 			wol.WakeServer(logger, config.MacAddress, config.BroadcastAddress, config, serverState)
 
-			server.WaitServerOnline(logger, serverAddress, w)
+			server.WaitServerOnline(logger, serverAddress, &config)
 			return
 		} else {
 			logger.Info("Server is already online, handling domain proxy...")
