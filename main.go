@@ -143,6 +143,7 @@ func sendJellyfinMessage(logger *logrus.Logger, jellyfinUrl, apiKey, sessionId s
 		logger.Warn("Error sending message to Jellyfin: ", err)
 		return
 	}
+	logger.Info("Message sent !")
 	defer resp.Body.Close()
 }
 
