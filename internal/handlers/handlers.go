@@ -37,11 +37,11 @@ func Handler(logger *logrus.Logger, w http.ResponseWriter, r *http.Request, conf
 			server.WaitServerOnline(logger, serverAddress, &config)
 			return
 		} else {
-			logger.Info("Server is already online, handling domain proxy...")
+			logger.Debug("Server is already online, handling domain proxy...")
 			handleDomainProxy(w, r, config)
 		}
 	} else {
-		logger.Info("No wake-up endpoint matched, handling domain proxy...")
+		logger.Debug("No wake-up endpoint matched, handling domain proxy...")
 		handleDomainProxy(w, r, config)
 	}
 }
