@@ -110,12 +110,10 @@ func sendJellyfinMessagesForSessionsWithPlayingQueue(logger *logrus.Logger, jell
 		return
 	}
 
-	// Envoyer un message à chaque session avec une NowPlayingQueue non vide
+	// Envoyer un message à chaque session
 	for _, session := range sessions {
-		if queue, ok := session["NowPlayingQueue"].([]interface{}); ok && len(queue) > 0 {
-			if sessionId, ok := session["Id"].(string); ok {
-				sendJellyfinMessage(logger, jellyfinUrl, apiKey, sessionId)
-			}
+		if sessionId, ok := session["Id"].(string); ok {
+			sendJellyfinMessage(logger, jellyfinUrl, apiKey, sessionId)
 		}
 	}
 }
