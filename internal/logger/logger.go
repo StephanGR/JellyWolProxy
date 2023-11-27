@@ -5,11 +5,20 @@ import (
 	"net/http"
 )
 
-func InitLogger() *logrus.Logger {
+func InitLogger(logLevel string) *logrus.Logger {
 	logger := logrus.New()
 	logger.SetFormatter(&logrus.TextFormatter{
 		FullTimestamp: true,
 	})
+
+	level, err := logrus.ParseLevel(logLevel)
+	if err != nil {
+		// Si le niveau de journalisation n'est pas reconnu, réglez par défaut sur InfoLevel
+		logger.Warnf("Invalid log level '%s', falling back to 'info'", logLevel)
+		level = logrus.InfoLevel
+	}
+	logger.SetLevel(level)
+
 	return logger
 }
 

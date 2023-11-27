@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	logger := logger.InitLogger()
+	logger := logger.InitLogger("Debug")
 
 	configPath := flag.String("config", "config.json", "path to config file")
 	port := flag.Int("port", 3881, "port to run the server on")
