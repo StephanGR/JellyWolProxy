@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
-	"os"
 	"strings"
 	"sync"
 	"time"
@@ -74,20 +73,8 @@ func (s *ServerState) DoneWakingUp() {
 	s.wakingUp = false
 }
 
-func loadConfig(configPath string) (*Config, error) {
-	var config Config
-	configFile, err := os.ReadFile(configPath)
-	if err != nil {
-		return nil, err
-	}
-	err = json.Unmarshal(configFile, &config)
-	if err != nil {
-		return nil, err
-	}
-	return &config, nil
-}
-
 func sendJellyfinMessagesForSessionsWithPlayingQueue(logger *logrus.Logger, jellyfinUrl, apiKey string) {
+	logger.Info("Fetching sessions - Jellyfin API")
 	sessionsUrl := fmt.Sprintf("%s/Sessions", jellyfinUrl)
 	req, err := http.NewRequest("GET", sessionsUrl, nil)
 	if err != nil {
@@ -112,6 +99,7 @@ func sendJellyfinMessagesForSessionsWithPlayingQueue(logger *logrus.Logger, jell
 
 	// Envoyer un message à chaque session
 	for _, session := range sessions {
+		logger.Info(session)
 		if sessionId, ok := session["Id"].(string); ok {
 			sendJellyfinMessage(logger, jellyfinUrl, apiKey, sessionId)
 		}
