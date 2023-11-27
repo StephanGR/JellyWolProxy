@@ -1,7 +1,6 @@
 package server
 
 import (
-	"fmt"
 	"github.com/StephanGR/JellyWolProxy/internal/util"
 	"github.com/sirupsen/logrus"
 	"net/http"
@@ -22,7 +21,6 @@ func WaitServerOnline(logger *logrus.Logger, serverAddress string, w http.Respon
 			}
 		case <-timeout:
 			logger.Info("Timeout reached, server did not wake up.")
-			fmt.Fprintf(w, "Server is still offline. Please try again later.")
 			return
 		}
 	}
