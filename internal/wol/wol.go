@@ -16,7 +16,9 @@ func WakeServer(logger *logrus.Logger, macAddress string, broadcastAddress strin
 	}
 	defer serverState.DoneWakingUp()
 
-	jellyfin.SendJellyfinMessagesForSessionsWithPlayingQueue(logger, config.JellyfinUrl, config.ApiKey)
+	logger.Info("WE WILL SEND MESSAFE TO JELLYFIN SESSIONS !!!!!!!!!!!!!!!!!")
+
+	jellyfin.SendJellyfinMessagesToAllSessions(logger, config.JellyfinUrl, config.ApiKey)
 
 	client, err := wol.NewClient()
 	if err != nil {

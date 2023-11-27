@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func SendJellyfinMessagesForSessionsWithPlayingQueue(logger *logrus.Logger, jellyfinUrl, apiKey string) {
+func SendJellyfinMessagesToAllSessions(logger *logrus.Logger, jellyfinUrl, apiKey string) {
 	logger.Info("Fetching sessions - Jellyfin API")
 	sessionsUrl := fmt.Sprintf("%s/Sessions", jellyfinUrl)
 	req, err := http.NewRequest("GET", sessionsUrl, nil)
