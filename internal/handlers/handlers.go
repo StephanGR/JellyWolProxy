@@ -26,8 +26,10 @@ func handleDomainProxy(w http.ResponseWriter, r *http.Request, config config.Con
 }
 
 func Handler(logger *logrus.Logger, w http.ResponseWriter, r *http.Request, config config.Config, serverState *server_state.ServerState) {
+	logger.Debug("Request received for path: ", r.URL.Path)
 	if util.ShouldWakeServer(r.URL.Path, config.WakeUpEndpoints) {
 		serverAddress := fmt.Sprintf("%s:%d", config.WakeUpIp, config.WakeUpPort)
+		logger.Debug("Wake-up endpoint matched, checking server status...")
 		if !util.IsServerUp(logger, serverAddress) {
 			logger.Info("Server is offline, trying to wake up using Wake On Lan")
 			wol.WakeServer(logger, config.MacAddress, config.BroadcastAddress, config, serverState)
@@ -35,9 +37,11 @@ func Handler(logger *logrus.Logger, w http.ResponseWriter, r *http.Request, conf
 			server.WaitServerOnline(logger, serverAddress, w)
 			return
 		} else {
+			logger.Info("Server is already online, handling domain proxy...")
 			handleDomainProxy(w, r, config)
 		}
 	} else {
+		logger.Info("No wake-up endpoint matched, handling domain proxy...")
 		handleDomainProxy(w, r, config)
 	}
 }
