@@ -20,6 +20,6 @@ jobs:
           goos: linux
           goarch: amd64
           goversion: "1.21.4"
-          project_path: "/cmd/jellywolproxy/"
+          project_path: "cmd/jellywolproxy"
           binary_name: "jelly-wol-proxy"
           compress_assets: OFF
