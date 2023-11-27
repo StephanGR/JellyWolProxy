@@ -1,0 +1,14 @@
+{
+  "jellyfinUrl": "example1.mydomain.com",
+  "apiKey": "xxxxxxxxxx",
+  "macAddress": "50:91:e3:c9:37:18",
+  "broadcastAddress": "255.255.255.255:9",
+  "wakeUpIp": "192.168.0.x",
+  "wakeUpPort": 81,
+  "forwardIp": "192.168.0.x",
+  "forwardPort": 1234,
+  "wakeUpEndpoints": [
+    "/videos/*/main.m3u8",
+    "/Videos/*/stream"
+  ]
+}
