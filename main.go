@@ -111,7 +111,7 @@ func sendJellyfinMessage(logger *logrus.Logger, jellyfinUrl, apiKey, sessionId s
 	payload := strings.NewReader(`{
 		"Header": "Information",
 		"Text": "Le serveur démarre...\nVeuillez patienter",
-		"TimeoutMs": 2000
+		"TimeoutMs": 10000
 	}`)
 
 	req, err := http.NewRequest("POST", messageUrl, payload)
