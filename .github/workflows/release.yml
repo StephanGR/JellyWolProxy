@@ -19,5 +19,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           goos: linux
           goarch: amd64
-          goversion: "https://go.dev/dl/go1.21.4.linux-amd64.tar.gz"
+          goversion: "1.21.4"
+          project_path: "/cmd/jellywolproxy/"
           binary_name: "jelly-wol-proxy"
+          compress_assets: OFF
